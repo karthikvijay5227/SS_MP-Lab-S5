@@ -24,7 +24,9 @@ void main()
 			}
 		}
 	}
-	if(j!=(st+len-1))
+	if(st>=50)
+		printf("Cannot allocate\n"); 
+	else if(j!=(st+len-1))
 		printf("The file is allocated to disk\n");
 	else
 		printf("The file is not allocated \n");
