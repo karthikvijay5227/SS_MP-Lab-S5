@@ -33,8 +33,8 @@ void main()
 	
 	nof = mem_size / frame_size;
 	
-	printf("%d frames are present in main memory and let them be numbered from 0 to %d", nof, nof - 1);
-	printf("\nEnter the number of processes:");
+	printf("\n%d frames are present in main memory and let them be numbered from 0 to %d", nof, nof - 1);
+	printf("\n\nEnter the number of processes:");
 	scanf("%d", &nop);
 	
 	for (i = 0; i < nop; i++)
@@ -72,7 +72,6 @@ void main()
 				{
 					printf("\n\t Error! %d is out of bound of frame.",frame1);
 				}
-				printf("\nAlready Allocated Frame:");
 				y = no_free_frames();
 				printf("\nNumber of free frames: %d", y);
 				printf("\nThe free frames are: ");
@@ -109,13 +108,59 @@ void main()
 	printf("\n -----Page Table-----\n");
 	for (i = 0; i < nop; i++)
 	{
-		printf("\n-----------------------------------");
-		printf("\nPage no\t\tProcess No.\t\tFrame no");
-		printf("\n-----------------------------------");
+		printf("\n----------------------------------------");
+		printf("\nPage no\t\tProcess No.\tFrame no");
+		printf("\n----------------------------------------");
 		for (j = 0; j < process[i].n; j++)
 		{
 			printf("\n%d\t\t%d\t\t%d", j,i, process[i].p[j]);
 		}
 	}
 	printf("\n");
+	
+	printf("\n**** -1 indicates Not Allocated\n\n");
+	
+	printf("\n -----Frame Table-----\n");
+	printf("\n-----------------------------------------");
+	printf("\nFrame no\tPage No.\tProcess no");
+	printf("\n-----------------------------------------\n");
+	int framear[50],pagear[50],processar[50],ab=0;
+	for (i = 0; i < nof; i++)
+	{	
+		for (j = 0; j < process[i].n; j++)
+		{
+			if(process[i].p[j]!=-1){		
+			framear[ab]=process[i].p[j];
+			pagear[ab]=j;
+			processar[ab++]=i;
+			}
+		}
+	}
+	
+	int tempf,pos;
+	for(i=0;i<ab;i++)
+	{
+		pos = i;
+		for(j=i+1;j<ab;j++)
+		{
+			if(framear[j]<framear[pos])
+				pos = j;
+		}
+		tempf=framear[i];
+		framear[i]=framear[pos];
+		framear[pos]=tempf;
+	
+		tempf=pagear[i];
+		pagear[i]=pagear[pos];
+		pagear[pos]=tempf;
+	
+		tempf=processar[i];
+		processar[i]=processar[pos];
+		processar[pos]=tempf;	
+	}
+	
+	for(i=0;i<ab;i++)
+	{
+		printf("%d\t\t%d\t\t%d\n",framear[i],pagear[i],processar[i]);
+	}		
 }
